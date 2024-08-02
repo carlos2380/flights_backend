@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"flag"
+	"flights/internal/fetcher/radarbox"
+	"flights/internal/handlers"
 	"flights/internal/server"
 	"log"
 	"net/http"
@@ -16,7 +18,10 @@ func main() {
 	port := flag.String("port", "8000", "Port to server will be listening.")
 	flag.Parse()
 
-	router := server.NewRouter()
+	fHandler := &handlers.FlightHandler{
+		FlightFetcher: &radarbox.FlightFetcherRadarbox{},
+	}
+	router := server.NewRouter(fHandler)
 
 	srv := &http.Server{
 		Addr:    ":" + *port,
