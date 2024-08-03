@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flights/internal/errors"
 	"flights/models"
+	"io"
 	"net/http"
 
 	"google.golang.org/grpc/codes"
@@ -26,12 +27,17 @@ func (f *FlightInfoRadarbox) FetchFlightInfo(flight string) (models.Flight, erro
 		return models.Flight{}, errors.DetailedError(errors.ErrUnexpectedStatusCode, status.Errorf(codes.Internal, "unexpected status code: %s", http.StatusText(resp.StatusCode)))
 	}
 
-	if resp.ContentLength == 0 {
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return models.Flight{}, errors.DetailedError(err, err)
+	}
+
+	if len(bodyBytes) == 0 {
 		return models.Flight{}, nil
 	}
 
 	var flightJSON map[string]interface{}
-	if err := json.NewDecoder(resp.Body).Decode(&flightJSON); err != nil {
+	if err := json.Unmarshal(bodyBytes, &flightJSON); err != nil {
 		return models.Flight{}, errors.DetailedError(errors.ErrDecodeFlightInfo, err)
 	}
 
