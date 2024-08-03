@@ -26,6 +26,10 @@ func (f *FlightInfoRadarbox) FetchFlightInfo(flight string) (models.Flight, erro
 		return models.Flight{}, errors.DetailedError(errors.ErrUnexpectedStatusCode, status.Errorf(codes.Internal, "unexpected status code: %s", http.StatusText(resp.StatusCode)))
 	}
 
+	if resp.ContentLength == 0 {
+		return models.Flight{}, nil
+	}
+
 	var flightJSON map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&flightJSON); err != nil {
 		return models.Flight{}, errors.DetailedError(errors.ErrDecodeFlightInfo, err)
