@@ -1,6 +1,6 @@
 module flights
 
-go 1.22.4
+go 1.21
 
 require (
 	github.com/gorilla/mux v1.8.1
@@ -8,7 +8,7 @@ require (
 )
 
 require (
-	golang.org/x/sys v0.20.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240528184218-531527333157 // indirect
-	google.golang.org/protobuf v1.34.1 // indirect
+	golang.org/x/sys v0.22.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240730163845-b1a4ccb954bf // indirect
+	google.golang.org/protobuf v1.34.2 // indirect
 )
