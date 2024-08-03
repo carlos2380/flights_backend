@@ -1,0 +1,128 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server for managing flight information.",
+        "title": "Flights API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "paths": {
+        "/api/flights": {
+            "get": {
+                "description": "Get the list of latest flights",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "flights"
+                ],
+                "summary": "Get last flights",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Flight"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/flights/{id}": {
+            "get": {
+                "description": "Get details of a flight by its id flight",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "flights"
+                ],
+                "summary": "Get flight by id flight",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Flight ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Flight"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Flight": {
+            "type": "object",
+            "properties": {
+                "aircraft": {
+                    "type": "string"
+                },
+                "airline": {
+                    "type": "string"
+                },
+                "destination": {
+                    "type": "string"
+                },
+                "flight": {
+                    "type": "string"
+                },
+                "hour_arr": {
+                    "type": "string"
+                },
+                "hour_dep": {
+                    "type": "string"
+                },
+                "origin": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "terminal_arr": {
+                    "type": "string"
+                },
+                "terminal_dep": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
