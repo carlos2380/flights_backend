@@ -9,4 +9,6 @@ type Flight struct {
 	HourDep     string `json:"hour_dep"`
 	HourArr     string `json:"hour_arr"`
 	Status      string `json:"status"`
+	TerminalDep string `json:"terminal_dep"`
+	TerminalArr string `json:"terminal_arr"`
 }
