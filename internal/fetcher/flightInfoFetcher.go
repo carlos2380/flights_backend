@@ -3,5 +3,5 @@ package fetcher
 import "flights/models"
 
 type FlightInfoFetcher interface {
-	FetchFlightInfo() ([]models.Flight, error)
+	FetchFlightInfo(flight string) (models.Flight, error)
 }

@@ -13,6 +13,9 @@ var (
 	ErrDecodeFlights        = status.New(codes.Internal, "failed to decode flights data").Err()
 	ErrMethodNotAllowed     = status.New(codes.InvalidArgument, "method not allowed").Err()
 	ErrUnexpectedStatusCode = status.New(codes.Internal, "unexpected status code").Err()
+	ErrFetchFlightInfo      = status.New(codes.Internal, "failed to fetch flight info").Err()
+	ErrDecodeFlightInfo     = status.New(codes.Internal, "failed to decode flight info data").Err()
+	ErrInvalidFlightID      = status.New(codes.InvalidArgument, "invalid flight ID").Err()
 )
 
 func DetailedError(mainErr, detailedErr error) error {

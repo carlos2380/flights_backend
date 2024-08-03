@@ -6,8 +6,8 @@ import (
 )
 
 type FlightHandler struct {
-	FlightsFetcher fetcher.FlightsFetcher
-	//FlightDetailFetcher fetcher.FlightDetailFetcher
+	FlightsFetcher    fetcher.FlightsFetcher
+	FlightInfoFetcher fetcher.FlightInfoFetcher
 }
 
 func setHeaders(w http.ResponseWriter) {
