@@ -2,6 +2,6 @@ package fetcher
 
 import "flights/models"
 
-type FlightFetcher interface {
+type FlightsFetcher interface {
 	FetchLatestFlights() ([]models.Flight, error)
 }

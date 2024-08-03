@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 
 	fHandler := &handlers.FlightHandler{
-		FlightFetcher: &radarbox.FlightFetcherRadarbox{},
+		FlightsFetcher: &radarbox.FlightsFetcherRadarbox{},
 	}
 	router := server.NewRouter(fHandler)
 

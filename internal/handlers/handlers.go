@@ -6,7 +6,7 @@ import (
 )
 
 type FlightHandler struct {
-	FlightFetcher fetcher.FlightFetcher
+	FlightsFetcher fetcher.FlightsFetcher
 	//FlightDetailFetcher fetcher.FlightDetailFetcher
 }
 
