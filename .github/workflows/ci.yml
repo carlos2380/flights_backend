@@ -31,7 +31,6 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-    needs: lint
 
     services:
       redis:
@@ -53,3 +52,31 @@ jobs:
 
       - name: Run unit tests
         run: go test -v ./...
+
+  generate_docs:
+    runs-on: ubuntu-latest
+    needs: [lint, tests]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Install Swag
+        run: go install github.com/swaggo/swag/cmd/swag@latest
+
+      - name: Generate Swagger documentation
+        run: swag init -g cmd/server/main.go
+
+      - name: Commit Swagger docs
+        run: |
+          git config --global user.email "carlos.2380@hotmail.com"
+          git config --global user.name "Carlos"
+          git add -A
+          git commit -m "Update Swagger docs"
+          git push

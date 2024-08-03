@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	_ "flights/docs"
 	"flights/internal/fetcher/radarbox"
 	"flights/internal/handlers"
 	"flights/internal/server"
@@ -12,8 +13,16 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
+// @title Flights API
+// @version 1.0
+// @description This is a sample server for managing flight information.
+
+// @host localhost:8000
 func main() {
 	port := flag.String("port", "8000", "Port to server will be listening.")
 	flag.Parse()
@@ -22,7 +31,9 @@ func main() {
 		FlightsFetcher:    &radarbox.FlightsFetcherRadarbox{},
 		FlightInfoFetcher: &radarbox.FlightInfoRadarbox{},
 	}
-	router := server.NewRouter(fHandler)
+
+	router := server.NewRouter(fHandler).(*mux.Router)
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	srv := &http.Server{
 		Addr:    ":" + *port,

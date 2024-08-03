@@ -9,6 +9,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// GetFlights godoc
+// @Summary Get last flights
+// @Description Get the list of latest flights
+// @Tags flights
+// @Produce  json
+// @Success 200 {array} models.Flight
+// @Failure 500 {object} map[string]string
+// @Router /api/flights [get]
 func (fhandler FlightHandler) GetFlights(w http.ResponseWriter, r *http.Request) {
 	setHeaders(w)
 	switch r.Method {
@@ -28,6 +36,16 @@ func (fhandler FlightHandler) GetFlights(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+// GetFlight godoc
+// @Summary Get flight by id flight
+// @Description Get details of a flight by its id flight
+// @Tags flights
+// @Produce  json
+// @Param id path string true "Flight ID"
+// @Success 200 {object} models.Flight
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /api/flights/{id} [get]
 func (fhandler FlightHandler) GetFlight(w http.ResponseWriter, r *http.Request) {
 	setHeaders(w)
 	switch r.Method {
