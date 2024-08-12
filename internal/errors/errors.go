@@ -3,23 +3,39 @@ package errors
 import (
 	"encoding/json"
 	"net/http"
-
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 var (
-	ErrFetchFlights         = status.New(codes.Internal, "failed to fetch flights").Err()
-	ErrDecodeFlights        = status.New(codes.Internal, "failed to decode flights data").Err()
-	ErrMethodNotAllowed     = status.New(codes.InvalidArgument, "method not allowed").Err()
-	ErrUnexpectedStatusCode = status.New(codes.Internal, "unexpected status code").Err()
-	ErrFetchFlightInfo      = status.New(codes.Internal, "failed to fetch flight info").Err()
-	ErrDecodeFlightInfo     = status.New(codes.Internal, "failed to decode flight info data").Err()
-	ErrInvalidFlightID      = status.New(codes.InvalidArgument, "invalid flight ID").Err()
+	ErrFetchFlights         = httpError(http.StatusInternalServerError, "failed to fetch flights")
+	ErrDecodeFlights        = httpError(http.StatusInternalServerError, "failed to decode flights data")
+	ErrMethodNotAllowed     = httpError(http.StatusMethodNotAllowed, "method not allowed")
+	ErrUnexpectedStatusCode = httpError(http.StatusInternalServerError, "unexpected status code")
+	ErrFetchFlightInfo      = httpError(http.StatusInternalServerError, "failed to fetch flight info")
+	ErrDecodeFlightInfo     = httpError(http.StatusInternalServerError, "failed to decode flight info data")
+	ErrInvalidFlightID      = httpError(http.StatusBadRequest, "invalid flight ID")
 )
 
+func httpError(statusCode int, message string) error {
+	return &HTTPError{
+		StatusCode: statusCode,
+		Message:    message,
+	}
+}
+
+type HTTPError struct {
+	StatusCode int
+	Message    string
+}
+
+func (e *HTTPError) Error() string {
+	return e.Message
+}
+
 func DetailedError(mainErr, detailedErr error) error {
-	return status.Errorf(codes.Internal, "%v: %v", mainErr, detailedErr)
+	return &HTTPError{
+		StatusCode: http.StatusInternalServerError,
+		Message:    mainErr.Error() + ": " + detailedErr.Error(),
+	}
 }
 
 func WriteJSONError(w http.ResponseWriter, err error, httpStatusCode int) {
